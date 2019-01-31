@@ -24,11 +24,13 @@ class TaskController {
                     task
                 })
             }
-        })
-        return res.status(404).send({
-            success: false,
-            message: 'Task does not exist',
-            errors: true
+            else {
+                return res.status(404).send({
+                    success: false,
+                    message: 'Task does not exist',
+                    errors: true
+                })
+            }
         })
     }
 
@@ -54,20 +56,22 @@ class TaskController {
                 errors: true
             })
         }
-        const task = {
-            id: uuidv4(),
-            title: req.body.title,
-            description: req.body.description,
-            createdAt: new Date(),
-            modifiedAt: null
+        else {
+            const task = {
+                id: uuidv4(),
+                title: req.body.title,
+                description: req.body.description,
+                createdAt: new Date(),
+                modifiedAt: null
+            }
+            db.push(task)
+            return res.status(201).send({
+                success: true,
+                message: 'Task added successfully',
+                errors: false,
+                task
+            })
         }
-        db.push(task)
-        return res.status(201).send({
-            success: true,
-            message: 'Task added successfully',
-            errors: false,
-            task
-        })
     }
 
     updateTask(req, res) {
@@ -108,24 +112,26 @@ class TaskController {
                 errors: true
             })
         }
-        const updatedTask = {
-            id: taskFound.id,
-            title: req.body.title || taskFound.title,
-            description: req.body.description || taskFound.description,
-            createdAt: taskFound.createdAt,
-            modifiedAt: new Date(),
+        else {
+            const updatedTask = {
+                id: taskFound.id,
+                title: req.body.title || taskFound.title,
+                description: req.body.description || taskFound.description,
+                createdAt: taskFound.createdAt,
+                modifiedAt: new Date(),
+            }
+            db.splice(itemIndex, 1, updatedTask)
+            return res.status(201).send({
+                success: true,
+                message: 'Task updated successfully',
+                errors: false,
+                updatedTask,
+            })
         }
-        db.splice(itemIndex, 1, updatedTask)
-        return res.status(201).send({
-            success: true,
-            message: 'Task updated successfully',
-            errors: false,
-            updatedTask,
-        })
     }
 
     deleteTask(req, res) {
-        const id = parseInt(req.params.id, 10)
+        const id = req.params.id
         db.map((task, index) => {
             if (task.id === id) {
                 db.splice(index, 1)
@@ -135,11 +141,13 @@ class TaskController {
                     errors: false
                 })
             }
-        })
-        return res.status(404).send({
-            success: false,
-            message: 'Task not found',
-            errors: true
+            else {
+                return res.status(404).send({
+                    success: false,
+                    message: 'Task not found',
+                    errors: true
+                })
+            }
         })
     }
 
@@ -152,11 +160,13 @@ class TaskController {
                 errors: false
             })
         }
-        return res.status(404).send({
-            success: false,
-            message: 'No tasks not found',
-            errors: true
-        })
+        else {
+            return res.status(404).send({
+                success: false,
+                message: 'No tasks not found',
+                errors: true
+            })
+        }
     }
 }
 
