@@ -1,23 +1,23 @@
-const db = require('../db/db').tasks
+const db = require('../db/db')
 const _ = require('lodash')
 const uuidv4 = require('uuid/v4')
 
 class TaskController {
 
     getAllTasks(req, res) {
-        return res.status(200).send({
+        return res.status(200).json({
             success: true,
             message: 'Tasks retrieved successfully',
             errors: false,
-            tasks: db
+            tasks: db.tasks
         })
     }
 
     getTask(req, res) {
-        const id = req.params.id
-        db.map((task) => {
+        const id = req.body.id
+        db.tasks.map((task) => {
             if (task.id === id) {
-                return res.status(200).send({
+                return res.status(200).json({
                     success: true,
                     message: 'Task retrieved successfully',
                     errors: false,
@@ -25,7 +25,7 @@ class TaskController {
                 })
             }
             else {
-                return res.status(404).send({
+                return res.status(404).json({
                     success: false,
                     message: 'Task does not exist',
                     errors: true
@@ -36,21 +36,21 @@ class TaskController {
 
     createTask(req, res) {
         if (!req.body.title && !req.body.description) {
-            return res.status(400).send({
+            return res.status(400).json({
                 success: false,
                 message: 'Title and Description is required',
                 errors: true
             })
         }
         else if (!req.body.title) {
-            return res.status(400).send({
+            return res.status(400).json({
                 success: false,
                 message: 'Title is required',
                 errors: true
             })
         }
         else if (!req.body.description) {
-            return res.status(400).send({
+            return res.status(400).json({
                 success: false,
                 message: 'Description is required',
                 errors: true
@@ -64,8 +64,8 @@ class TaskController {
                 createdAt: new Date(),
                 modifiedAt: null
             }
-            db.push(task)
-            return res.status(201).send({
+            db.tasks.push(task)
+            return res.status(201).json({
                 success: true,
                 message: 'Task added successfully',
                 errors: false,
@@ -75,38 +75,38 @@ class TaskController {
     }
 
     updateTask(req, res) {
-        const id = req.params.id
+        const id = req.body.id
         let taskFound
         let itemIndex
-        db.map((task, index) => {
+        db.tasks.map((task, index) => {
             if (task.id === id) {
                 taskFound = task
                 itemIndex = index
             }
         })
         if (!taskFound) {
-            return res.status(404).send({
+            return res.status(404).json({
                 success: false,
                 message: 'Task not found',
                 errors: true
             })
         }
         if (!req.body.title && !req.body.description) {
-            return res.status(400).send({
+            return res.status(400).json({
                 success: false,
                 message: 'Title and Description is required',
                 errors: true
             })
         }
         if (!req.body.title) {
-            return res.status(400).send({
+            return res.status(400).json({
                 success: false,
                 message: 'Title is required',
                 errors: true
             })
         }
         else if (!req.body.description) {
-            return res.status(400).send({
+            return res.status(400).json({
                 success: false,
                 message: 'Description is required',
                 errors: true
@@ -120,8 +120,8 @@ class TaskController {
                 createdAt: taskFound.createdAt,
                 modifiedAt: new Date(),
             }
-            db.splice(itemIndex, 1, updatedTask)
-            return res.status(201).send({
+            db.tasks.splice(itemIndex, 1, updatedTask)
+            return res.status(201).json({
                 success: true,
                 message: 'Task updated successfully',
                 errors: false,
@@ -131,18 +131,18 @@ class TaskController {
     }
 
     deleteTask(req, res) {
-        const id = req.params.id
-        db.map((task, index) => {
+        const id = req.body.id
+        db.tasks.map((task, index) => {
             if (task.id === id) {
-                db.splice(index, 1)
-                return res.status(200).send({
+                db.tasks.splice(index, 1)
+                return res.status(200).json({
                     success: true,
                     message: 'Task deleted successfuly',
                     errors: false
                 })
             }
             else {
-                return res.status(404).send({
+                return res.status(404).json({
                     success: false,
                     message: 'Task not found',
                     errors: true
@@ -152,16 +152,16 @@ class TaskController {
     }
 
     deleteAllTasks(req, res) {
-        if (db.length !== 0) {
-            db.splice(0, db.length)
-            return res.status(200).send({
+        if (db.tasks.length !== 0) {
+            db.tasks.splice(0, db.tasks.length)
+            return res.status(200).json({
                 success: true,
                 message: 'All tasks deleted successfuly',
                 errors: false
             })
         }
         else {
-            return res.status(404).send({
+            return res.status(404).json({
                 success: false,
                 message: 'No tasks not found',
                 errors: true
