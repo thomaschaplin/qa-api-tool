@@ -1,4 +1,4 @@
-const db = require('../db/db')
+const tasks = require('../db/tasks').tasks
 const _ = require('lodash')
 const uuidv4 = require('uuid/v4')
 
@@ -9,13 +9,13 @@ class TaskController {
             success: true,
             message: 'Tasks retrieved successfully',
             errors: false,
-            tasks: db.tasks
+            tasks: tasks
         })
     }
 
     getTask(req, res) {
         const id = req.body.id
-        db.tasks.map((task) => {
+        tasks.map((task) => {
             if (task.id === id) {
                 return res.status(200).json({
                     success: true,
@@ -64,7 +64,7 @@ class TaskController {
                 createdAt: new Date(),
                 modifiedAt: null
             }
-            db.tasks.push(task)
+            tasks.push(task)
             return res.status(201).json({
                 success: true,
                 message: 'Task added successfully',
@@ -78,7 +78,7 @@ class TaskController {
         const id = req.body.id
         let taskFound
         let itemIndex
-        db.tasks.map((task, index) => {
+        tasks.map((task, index) => {
             if (task.id === id) {
                 taskFound = task
                 itemIndex = index
@@ -120,7 +120,7 @@ class TaskController {
                 createdAt: taskFound.createdAt,
                 modifiedAt: new Date(),
             }
-            db.tasks.splice(itemIndex, 1, updatedTask)
+            tasks.splice(itemIndex, 1, updatedTask)
             return res.status(201).json({
                 success: true,
                 message: 'Task updated successfully',
@@ -132,9 +132,9 @@ class TaskController {
 
     deleteTask(req, res) {
         const id = req.body.id
-        db.tasks.map((task, index) => {
+        tasks.map((task, index) => {
             if (task.id === id) {
-                db.tasks.splice(index, 1)
+                tasks.splice(index, 1)
                 return res.status(200).json({
                     success: true,
                     message: 'Task deleted successfuly',
@@ -152,8 +152,8 @@ class TaskController {
     }
 
     deleteAllTasks(req, res) {
-        if (db.tasks.length !== 0) {
-            db.tasks.splice(0, db.tasks.length)
+        if (tasks.length !== 0) {
+            tasks.splice(0, tasks.length)
             return res.status(200).json({
                 success: true,
                 message: 'All tasks deleted successfuly',
