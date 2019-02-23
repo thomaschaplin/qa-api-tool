@@ -1,8 +1,8 @@
 {
-  "name": "task-api",
+  "name": "qa-api-tool",
   "version": "1.0.0",
-  "description": "Simple CRUD API for Tasks",
-  "main": "index.js",
+  "description": "RESTful API to provide useful QA tools",
+  "main": "app.js",
   "scripts": {
     "test": "jest"
   },

@@ -1,6 +1,6 @@
-# Task API
+# QA API Tool
 
-A demo API written in NodeJS with JWT authentication
+A RESTful API to provide useful tools for everyday QA work written in NodeJS with JWT authentication
 
 ## Getting Started
 
@@ -16,10 +16,10 @@ NodeJS
 ### Installing
 
 ```
-git clone https://github.com/thomaschaplin/task-api.git
+git clone https://github.com/thomaschaplin/qa-api-tool.git
 ```
 ```
-cd task-api
+cd qa-api-tool
 ```
 ```
 npm install
