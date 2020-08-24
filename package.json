@@ -12,7 +12,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "frisby": "^2.1.1",
-    "jest": "^24.0.0",
+    "jest": "^26.4.2",
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "nodemon": "^1.18.9",
